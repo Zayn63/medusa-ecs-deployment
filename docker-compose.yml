@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15
+    container_name: medusa-db
+    environment:
+      POSTGRES_USER: medusa
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: medusadb
+    ports:
+      - "5432:5432"
+
+  medusa:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://medusa:password@postgres:5432/medusadb
+      NODE_ENV: development
+    ports:
+      - "9000:9000"
